@@ -1,6 +1,6 @@
 clear; clc; close all;
 
-aa = 1;   %%runs for BER testing do => 500 
+aa = 50;   %%runs for BER testing do => 1000 
 xx=0;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,8 +51,8 @@ for j = 2:N
 end
 v = var(dW); % 19e-4
 
-EbN0dB = 31;
-for ss = 31
+EbN0dB = 1:5:31;
+for ss = 1:5:31
     xx=xx+1;
     for ii=1:aa
        
@@ -129,14 +129,14 @@ for ss = 31
         tx = pulse_shape.' + noise.';
         
      
-        figure()
-        plot(t_shape,real(new_sig))
-        hold on
-        plot(t_shape,imag(new_sig))
-        title("Pulse Shaped Signal With Phase Noise")
-        xlabel("Time [s]")
-        ylabel("Amplitude")      
-        
+%         figure()
+%         plot(t_shape,real(new_sig))
+%         hold on
+%         plot(t_shape,imag(new_sig))
+%         title("Pulse Shaped Signal With Phase Noise")
+%         xlabel("Time [s]")
+%         ylabel("Amplitude")      
+%         
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %% Fast Fourier Transform %
@@ -214,25 +214,25 @@ for ss = 31
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         lp_phn = lowpass(pulse_shape0, 100e+6, Fs); % filter modulated signal with phase noise
 
-        figure()
-        plot(t_shape0,real(lp_phn))
-        hold on
-        plot(t_shape0,imag(lp_phn))
-        title("Receieved Filtered Signal Phase Noise")
-        xlabel("Time [s]")
-        ylabel("Amplitude")
-        grid on
+%         figure()
+%         plot(t_shape0,real(lp_phn))
+%         hold on
+%         plot(t_shape0,imag(lp_phn))
+%         title("Receieved Filtered Signal Phase Noise")
+%         xlabel("Time [s]")
+%         ylabel("Amplitude")
+%         grid on
         
         lp_awgn = lowpass(pulse_shape1, 100e+6, Fs); % filter mod signal with AWGN
 
-        figure()
-        plot(t_shape0,lp_awgn)
-        hold on
-        plot(t_shape0,imag(lp_awgn))
-        title("Receieved Filtered Signal AWGN")
-        xlabel("Time [s]")
-        ylabel("Amplitude")
-        grid on
+%         figure()
+%         plot(t_shape0,lp_awgn)
+%         hold on
+%         plot(t_shape0,imag(lp_awgn))
+%         title("Receieved Filtered Signal AWGN")
+%         xlabel("Time [s]")
+%         ylabel("Amplitude")
+%         grid on
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %Matched Filters%
@@ -275,8 +275,9 @@ for ss = 31
                 err0 = err0+1;
             end
             BER0 = err0/length(bit);
+             BER1_0(ii) = BER0;
         end
-        BER1_0(ii) = BER0;
+       
    
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %Demodulator without Phase Noise
